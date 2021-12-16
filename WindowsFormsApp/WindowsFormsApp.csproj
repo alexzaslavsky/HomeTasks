@@ -79,5 +79,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MultitargetingClassLibrary\MultitargetingClassLibrary.csproj">
+      <Project>{54be22d2-d172-410e-8dcb-9af4d9445880}</Project>
+      <Name>MultitargetingClassLibrary</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

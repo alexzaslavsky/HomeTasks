@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using MultitargetingClassLibrary;
 using System;
 using System.Collections.Generic;
 
@@ -16,7 +17,7 @@ namespace CoreConsoleApp
 
             var config = builder.Build();
 
-            Console.WriteLine($"Hello {config["name"]}");
+            Console.WriteLine(GreetLib.Greet(config["name"]));
         }
     }
 }
