@@ -11,12 +11,12 @@ namespace CoreConsoleApp
             var builder = new ConfigurationBuilder();
             builder.AddCommandLine(args, new Dictionary<string, string>()
             {
-                ["-name"] = "Name"
+                ["-name"] = "name"
             });
 
             var config = builder.Build();
 
-            Console.WriteLine($"Hello {config["Name"]}");
+            Console.WriteLine($"Hello {config["name"]}");
         }
     }
 }
