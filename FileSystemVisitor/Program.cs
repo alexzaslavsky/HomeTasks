@@ -8,6 +8,7 @@ namespace FileSystemVisitor
     {
         static void Main(string[] args)
         {
+            //added new branch for unit testing
             var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
             var projectName = Assembly.GetCallingAssembly().GetName().Name;
             var startPath = baseDirectory.Substring(0, baseDirectory.IndexOf(projectName) + projectName.Length);
