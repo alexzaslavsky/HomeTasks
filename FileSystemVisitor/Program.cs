@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
 
 namespace FileSystemVisitor
 {
@@ -7,10 +8,13 @@ namespace FileSystemVisitor
     {
         static void Main(string[] args)
         {
+            var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            var projectName = Assembly.GetCallingAssembly().GetName().Name;
+            var startPath = baseDirectory.Substring(0, baseDirectory.IndexOf(projectName) + projectName.Length);
 
-            var fileSystemVisitor = new FileSystemVisitor(@"d:\ideas", file =>
+            var fileSystemVisitor = new FileSystemVisitor(startPath, file =>
             {
-                return file.FullName.Contains(".mp3");
+                return file.FullName.EndsWith(".cs");
             });
             
 
@@ -18,7 +22,7 @@ namespace FileSystemVisitor
             {
                 var fileSystemVisitor = sender as FileSystemVisitor;
 
-                if (fileSystemVisitor != null && args.Path.Contains("Samplestar"))
+                if (fileSystemVisitor != null && args.Path.Contains("Program"))
                 {
                     fileSystemVisitor.IsItemExcluded = true;
                 }

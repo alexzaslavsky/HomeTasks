@@ -59,15 +59,12 @@ namespace FileSystemVisitor
                     yield break;
                 }
 
-                CallEventHandler(file);
+                CallFileFindedEventHandler(file);
 
                 if (FindedFileVerified(file))
                 {
+                    CallFilteredFileFindedEventHandler(file);
                     yield return file;
-                }
-                else
-                {
-                    yield break;
                 }
             }
             OnFinish();
@@ -133,33 +130,42 @@ namespace FileSystemVisitor
 
         private bool FindedFileVerified(FileSystemInfo file)
         {
-            return !IsItemExcluded && (_filter is null || _filter(file));
+            if (!IsItemExcluded && (_filter is null || _filter(file)))
+            {
+                return true;
+            }
+            IsItemExcluded = false;
+            return false;
         }
 
-        private void CallEventHandler(FileSystemInfo file)
+        private void CallFileFindedEventHandler(FileSystemInfo file)
         {
-            var type = file.GetType() == typeof(FileInfo) ? FileType.File : FileType.Directory;
-            var args = new ItemFindedEventArgs(file.FullName, type);
+            var type = GetFileType(file);
+            var args = GetItemFindedEventArgs(file, type);
             if (type == FileType.File)
-                CallFileFindedEventHandler(args);
-            else
-                CallDirectoryFindedEventHandler(args);
-        }
-
-        private void CallFileFindedEventHandler(ItemFindedEventArgs args)
-        {
-            if (_filter == null)
                 OnFileFinded(args);
             else
-                OnFilteredFileFinded(args);
+                OnDirectoryFinded(args);
         }
 
-        private void CallDirectoryFindedEventHandler(ItemFindedEventArgs args)
+        private void CallFilteredFileFindedEventHandler(FileSystemInfo file)
         {
-            if (_filter == null)
-                OnDirectoryFinded(args);
+            var type = GetFileType(file);
+            var args = GetItemFindedEventArgs(file, type);
+            if (type == FileType.File)
+                OnFilteredFileFinded(args);
             else
                 OnFilteredDirectoryFinded(args);
+        }
+
+        private FileType GetFileType(FileSystemInfo file)
+        {
+            return file.GetType() == typeof(FileInfo) ? FileType.File : FileType.Directory;
+        }
+
+        private ItemFindedEventArgs GetItemFindedEventArgs(FileSystemInfo file, FileType type)
+        {
+            return new ItemFindedEventArgs(file.FullName, type);
         }
 
         #endregion
