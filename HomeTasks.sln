@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MultitargetingClassLibrary"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileSystemVisitor", "FileSystemVisitor\FileSystemVisitor.csproj", "{84B448E1-1078-4038-885B-0766F3643AAF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileSystemVisitor.Tests", "FileSystemVisitor.Tests\FileSystemVisitor.Tests.csproj", "{870EA6D6-E3A2-45C8-A5E8-2E765D3CE06B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{84B448E1-1078-4038-885B-0766F3643AAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{84B448E1-1078-4038-885B-0766F3643AAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{84B448E1-1078-4038-885B-0766F3643AAF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{870EA6D6-E3A2-45C8-A5E8-2E765D3CE06B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{870EA6D6-E3A2-45C8-A5E8-2E765D3CE06B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{870EA6D6-E3A2-45C8-A5E8-2E765D3CE06B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{870EA6D6-E3A2-45C8-A5E8-2E765D3CE06B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
