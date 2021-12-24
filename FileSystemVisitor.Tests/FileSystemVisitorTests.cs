@@ -3,89 +3,86 @@ using System;
 
 namespace FileSystemVisitor.Tests
 {
-    public class FileSystemVisitorTest
+    public class FileSystemVisitorTests
     {
+        const string projectName = "FileSystemVisitor";
+
         string startPath = string.Empty;
+
+        FileSystemVisitor sut;
 
         [SetUp]
         public void Setup()
         {
             var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            var projectName = "FileSystemVisitor";
             startPath = baseDirectory.Substring(0, baseDirectory.IndexOf(projectName) + projectName.Length);
         }
 
         [Test]
         public void Only_One_File_Program_Cs_Exists()
         {
-            var fsv = new FileSystemVisitor(startPath, file =>
+            sut = new FileSystemVisitor(startPath, file =>
             {
                 return file.FullName.EndsWith("Program.cs");
             });
 
-            int result = 0;
-            foreach (var item in fsv)
-            {
-                result++;
-            }
-
-            Assert.That(result, Is.EqualTo(1));
+            Assert.That(GetResult(sut), Is.EqualTo(1));
         }
 
         [Test]
         public void GetFourCsFiles_In_MainFolder_And_StopSearch()
         {
-            var fsv = new FileSystemVisitor(startPath, file =>
+            sut = new FileSystemVisitor(startPath, file =>
             {
                 return file.FullName.EndsWith(".cs");
             });
 
-            fsv.DirectoryFinded += (s, e) =>
+            sut.DirectoryFinded += (sender, eventArgs) =>
             {
-                if (s is FileSystemVisitor fileSystemVisitor)
+                if (sender is FileSystemVisitor fileSystemVisitor)
                     fileSystemVisitor.IsSearchStopped = true;
             };
 
-            int result = 0;
-            foreach (var item in fsv)
-            {
-                result++;
-            }
-
-            Assert.That(result, Is.EqualTo(4));
+            Assert.That(GetResult(sut), Is.EqualTo(4));
         }
 
         [Test]
         public void GetFourCsFiles_In_MainFolder_StopSearch_And_ExcludeProgramCs()
         {
-            var fsv = new FileSystemVisitor(startPath, file =>
+            sut = new FileSystemVisitor(startPath, file =>
             {
                 return file.FullName.EndsWith(".cs");
             });
 
-            fsv.FileFinded += (s, e) =>
+            sut.FileFinded += (sender, eventArgs) =>
             {
-                if (s is FileSystemVisitor fileSystemVisitor && e.Path.EndsWith("Program.cs"))
+                if (sender is FileSystemVisitor fileSystemVisitor && eventArgs.Path.EndsWith("Program.cs"))
                 {
                     fileSystemVisitor.IsItemExcluded = true;
                 }
             };
 
-            fsv.DirectoryFinded += (s, e) =>
+            sut.DirectoryFinded += (sender, eventArgs) =>
             {
-                if (s is FileSystemVisitor fileSystemVisitor)
+                if (sender is FileSystemVisitor fileSystemVisitor)
                 {
                     fileSystemVisitor.IsSearchStopped = true;
                 }
             };
 
+            Assert.That(GetResult(sut), Is.EqualTo(3));
+        }
+
+        private int GetResult(FileSystemVisitor sut)
+        {
             int result = 0;
-            foreach (var item in fsv)
+
+            foreach (var item in sut)
             {
                 result++;
             }
 
-            Assert.That(result, Is.EqualTo(3));
+            return result;
         }
     }
 }
