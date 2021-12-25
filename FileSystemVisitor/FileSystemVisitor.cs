@@ -56,6 +56,7 @@ namespace FileSystemVisitor
             {
                 if (IsSearchStopped)
                 {
+                    IsSearchStopped = false;
                     yield break;
                 }
 
